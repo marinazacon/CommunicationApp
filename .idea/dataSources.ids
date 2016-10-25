@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - @localhost" uuid="4d9fee54-78e4-45ee-911a-1a61c3594817">
+    <database-info product="MySQL" version="5.7.13-0ubuntu0.16.04.2" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+      <schema id="1" name="books">
+        <visible>1</visible>
+      </schema>
+      <schema id="2" name="information_schema"/>
+      <schema id="3" name="mysql"/>
+      <schema id="4" name="performance_schema"/>
+      <schema id="5" name="sys"/>
+      <schema id="6" name="test"/>
+      <schema id="7" name="zf_app">
+        <visible>1</visible>
+      </schema>
+      <table id="8" parent="1" name="categories"/>
+      <table id="9" parent="7" name="user"/>
+      <column id="10" parent="8" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="11" parent="8" name="title">
+        <data-type>varchar(50)|0</data-type>
+      </column>
+      <key id="12" parent="8" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <column id="13" parent="9" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(10) unsigned|0</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="14" parent="9" name="name">
+        <mandatory>1</mandatory>
+        <data-type>text|0</data-type>
+      </column>
+      <column id="15" parent="9" name="email">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)|0</data-type>
+      </column>
+      <column id="16" parent="9" name="password">
+        <mandatory>1</mandatory>
+        <data-type>text|0</data-type>
+      </column>
+      <index id="17" parent="9" name="idx_email">
+        <columns>email</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="18" parent="9" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <key id="19" parent="9" name="idx_email">
+        <columns>email</columns>
+        <underlying-index>idx_email</underlying-index>
+      </key>
+    </database-model>
+  </data-source>
+</component>
