@@ -13,7 +13,7 @@ class RegisterController extends AbstractActionController
 {
     public function indexAction()
     {
-        $form = new RegisterForm();
+        $form = $this->getServiceLocator()->get('RegisterForm');
         $viewModel = new ViewModel(array('form' =>
             $form));
         return $viewModel;
@@ -32,9 +32,7 @@ class RegisterController extends AbstractActionController
                 ));
         }
         $post = $this->request->getPost();
-        $form = new RegisterForm();
-        $inputFilter = new RegisterFilter();
-        $form->setInputFilter($inputFilter);
+        $form = $this->getServiceLocator()->get('RegisterForm');
         $form->setData($post);
         if (!$form->isValid()) {
             $model = new ViewModel(array(
@@ -54,14 +52,9 @@ class RegisterController extends AbstractActionController
 
     protected function createUser(array $data)
     {
-        $sm = $this->getServiceLocator();
-        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-        $resultSetPrototype = new \Zend\Db\ResultSet\ResultSet();
         $user = new User();
-        $resultSetPrototype->setArrayObjectPrototype($user);
-        $tableGateway = new \Zend\Db\TableGateway\TableGateway('user', $dbAdapter, null, $resultSetPrototype);
         $user->exchangeArray($data);
-        $userTable = new UserTable($tableGateway);
+        $userTable = $this->getServiceLocator()->get('UserTable');
         $userTable->saveUser($user);
         return true;
     }

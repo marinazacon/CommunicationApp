@@ -5,14 +5,13 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
-use Users\Form\LoginForm;
-use Users\Form\LoginFilter;
+
 
 class LoginController extends AbstractActionController
 {
     public function indexAction()
     {
-        $form = new LoginForm();
+        $form = $this->getServiceLocator()->get('LoginForm');
         $viewModel = new ViewModel(array('form' =>
             $form));
         return $viewModel;
@@ -36,9 +35,7 @@ class LoginController extends AbstractActionController
                 ));
         }
         $post = $this->request->getPost();
-        $form = new LoginForm();
-        $inputFilter = new LoginFilter();
-        $form->setInputFilter($inputFilter);
+        $form = $this->getServiceLocator()->get('LoginForm');
         $form->setData($post);
         if (!$form->isValid()) {
             $model = new ViewModel(array(
@@ -64,11 +61,7 @@ class LoginController extends AbstractActionController
     public function getAuthService()
     {
         if (!$this->authservice) {
-            $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
-            $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter,'user','email','password', 'MD5(?)');
-            $authService = new AuthenticationService();
-            $authService->setAdapter($dbTableAuthAdapter);
-            $this->authservice = $authService;
+            $this->authservice = $this->getServiceLocator()->get('AuthService');
         }
         return $this->authservice;
     }
