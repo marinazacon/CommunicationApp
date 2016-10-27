@@ -1,5 +1,5 @@
-<section class="register">
-    <h2>Register</h2>
+<section class="user-add">
+    <h2>Add User</h2>
     <!-- The following logic is used to display error messages: -->
     <?php if ($this->error): ?>
     <p class="error">
@@ -11,7 +11,8 @@
     <?php
     $form = $this->form;
     $form->prepare();
-    $form->setAttribute('action', $this->url('users/register/process'));
+    $form->setAttribute('action', $this->url(NULL,
+        array('controller'=>'UserManager', 'action'=>'userAddProcess')));
     $form->setAttribute('method', 'post');
     echo $this->form()->openTag($form);
     ?>

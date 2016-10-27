@@ -6,15 +6,15 @@
  * Time: 16.05
  */
 
-// filename : module/Users/src/Users/Form/RegisterForm.php
+// filename : module/Users/src/Users/Form/UserAddForm.php
 namespace Users\Form;
 use Zend\Form\Form;
 
-class RegisterForm extends Form
+class UserAddForm extends Form
 {
     public function __construct($name = null)
     {
-        parent::__construct('Register');
+        parent::__construct('UserAdd');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
 
@@ -81,7 +81,7 @@ class RegisterForm extends Form
                 'type' => 'Submit',
             ),
             'options' => array(
-                'label' => 'Register',
+                'label' => 'Add User',
             ),
         ));
     }

@@ -6,17 +6,25 @@
  * Time: 16.05
  */
 
-// filename : module/Users/src/Users/Form/RegisterForm.php
+// filename : module/Users/src/Users/Form/UserEditForm.php
 namespace Users\Form;
 use Zend\Form\Form;
 
-class RegisterForm extends Form
+class UserEditForm extends Form
 {
     public function __construct($name = null)
     {
-        parent::__construct('Register');
+        parent::__construct('UserEdit');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
+
+        $this->add(array(
+            'name' => 'id',
+            'attributes' => array(
+                'type' => 'hidden',
+                'required' => 'required'
+            ),
+        ));
 
         $this->add(array(
             'name' => 'name',
@@ -56,22 +64,7 @@ class RegisterForm extends Form
         $this->add(array(
             'name' => 'password',
             'attributes' => array(
-                'type' => 'password',
-                'required' => 'required',
-            ),
-            'options' => array(
-                'label' => 'Password',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'confirm_password',
-            'attributes' => array(
-                'type' => 'password',
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Confirm Password',
+                'type' => 'hidden',
             ),
         ));
 
@@ -79,9 +72,10 @@ class RegisterForm extends Form
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'Submit',
+                'required' => 'required'
             ),
             'options' => array(
-                'label' => 'Register',
+                'label' => 'Save',
             ),
         ));
     }

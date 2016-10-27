@@ -11,8 +11,7 @@
     <?php
     $form = $this->form;
     $form->prepare();
-    $form->setAttribute('action', $this->url(NULL,
-        array('controller'=>'Login', 'action' => 'process')));
+    $form->setAttribute('action', $this->url('users/login/process'));
     $form->setAttribute('method', 'post');
     echo $this->form()->openTag($form);
     ?>

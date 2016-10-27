@@ -17,7 +17,7 @@ class UserTable
         $data = array(
             'email' => $user->email,
             'name' => $user->name,
-            'password' => $user->password,
+            'password' => md5($user->password),
         );
         $id = (int)$user->id;
         if ($id == 0) {
@@ -40,5 +40,26 @@ class UserTable
             throw new \Exception("Could not find row $id");
         }
         return $row;
+    }
+
+    public function fetchAll()
+    {
+        $resultSet = $this->tableGateway->select();
+        return $resultSet;
+    }
+
+    public function getUserByEmail($userEmail)
+    {
+        $rowset = $this->tableGateway->select(array('email' => $userEmail));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $ userEmail");
+        }
+        return $row;
+    }
+
+    public function deleteUser($id)
+    {
+        $this->tableGateway->delete(array('id' => $id));
     }
 }

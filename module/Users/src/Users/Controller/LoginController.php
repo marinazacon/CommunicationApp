@@ -3,7 +3,6 @@ namespace Users\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 
 
@@ -26,11 +25,18 @@ class LoginController extends AbstractActionController
         return $viewModel;
     }
 
+    public function errorAction()
+    {
+        $viewModel = new ViewModel();
+        return $viewModel;
+    }
+
+
     public function processAction()
     {
         if (!$this->request->isPost()) {
-            return $this->redirect()->toRoute(NULL ,
-                array( 'controller' => 'login',
+            return $this->redirect()->toRoute(NULL,
+                array('controller' => 'login',
                     'action' => 'index'
                 ));
         }
@@ -49,12 +55,12 @@ class LoginController extends AbstractActionController
         $this->getAuthService()->getAdapter()->setIdentity($this->request->getPost('email'))->setCredential($this->request->getPost('password'));
         $result = $this->getAuthService()->authenticate();
         if ($result->isValid()) {
-        $this->getAuthService()->getStorage()->write($this->request->getPost('email'));
+            $this->getAuthService()->getStorage()->write($this->request->getPost('email'));
 
-        return $this->redirect()->toRoute(NULL , array(
-            'controller' => 'login',
-            'action' => 'confirm'
-        ));
+            return $this->redirect()->toRoute('users/login/process/confirm');
+        } else
+        {
+            return $this->redirect()->toRoute('users/login/process/error');
         }
     }
 

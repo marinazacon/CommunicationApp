@@ -8,10 +8,13 @@ return array(
                 'Users\Controller\RegisterController',
             'Users\Controller\Login' =>
                 'Users\Controller\LoginController',
+            'Users\Controller\UserManager' =>
+                'Users\Controller\UserManagerController',
         ),
     ),
     'router' => array(
         'routes' => array(
+
             'users' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -31,15 +34,99 @@ return array(
                     // as you solidify the routes for your module, however,
                     // you may want to remove it and replace it with more
                     // specific routes.
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
+                    'register' => array(
+                        'type'      => 'Segment',
+                        'options'   => array(
+                            'route' => '/register',
+                            'defaults' => array(
+                                'controller' => 'Register',
+                                'action'     => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'process' => array(
+                                'type'      => 'Segment',
+                                'options'   => array(
+                                    'route' => '/process',
+                                    'defaults' => array(
+                                        'controller' => 'Register',
+                                        'action'     => 'process',
+                                    ),
+                                ),
+                                'may_terminate' => true,
+                                'child_routes' => array(
+                                    'confirm' => array(
+                                        'type'      => 'Segment',
+                                        'options'   => array(
+                                            'route' => '/confirm',
+                                            'defaults' => array(
+                                                'controller' => 'Register',
+                                                'action'     => 'confirm',
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'login' => array(
+                        'type'      => 'Segment',
+                        'options'   => array(
+                            'route' => '/login',
+                            'defaults' => array(
+                                'controller' => 'Login',
+                                'action'     => 'index',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'process' => array(
+                                'type'      => 'Segment',
+                                'options'   => array(
+                                    'route' => '/process',
+                                    'defaults' => array(
+                                        'controller' => 'Login',
+                                        'action'     => 'process',
+                                    ),
+                                ),
+                                'may_terminate' => true,
+                                'child_routes' => array(
+                                    'confirm' => array(
+                                        'type'      => 'Segment',
+                                        'options'   => array(
+                                            'route' => '/confirm',
+                                            'defaults' => array(
+                                                'controller' => 'Login',
+                                                'action'     => 'confirm',
+                                            ),
+                                        ),
+                                    ),
+                                    'error' => array(
+                                        'type'      => 'Segment',
+                                        'options'   => array(
+                                            'route' => '/error',
+                                            'defaults' => array(
+                                                'controller' => 'Login',
+                                                'action'     => 'error',
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'user-manager' => array(
+                        'type'      => 'Segment',
+                        'options'   => array(
+                            'route' => '/user-manager[/:action[/:id]]',
                             'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id'      => '[a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
+                                'controller' => 'UserManager',
+                                'action'     => 'index',
                             ),
                         ),
                     ),
