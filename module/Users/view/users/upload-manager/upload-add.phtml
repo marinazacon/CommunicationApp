@@ -1,0 +1,53 @@
+<section class="upload-add">
+    <h2>Upload</h2>
+    <!-- The following logic is used to display error messages: -->
+    <?php if ($this->error): ?>
+        <p class="error">
+            Work in progress. Please try later.
+        </p>
+    <?php endif ?>
+
+
+    <!-- The following block is used to generate the form HTML tag using the form object assigned to the view in the controller -->
+    <?php
+    $form = $this->form;
+    $form->prepare();
+    $form->setAttribute('action', $this->url(NULL,
+        array('controller'=>'UploadManager', 'action'=>'process')));
+    $form->setAttribute('method', 'post');
+    echo $this->form()->openTag($form);
+    ?>
+
+
+    <!-- The following section is used to generate individual form elements for the Name, Email, Password, Confirm Password, and Submit fields -->
+    <table class="form-element">
+      <tr>
+         <td>
+             <?php
+             echo $this->formLabel($form->get('label')); ?>
+         </td>
+         <td>
+              <?php
+              echo $this->formElement($form->get('label'));
+              echo $this->formElementErrors($form->get('label')); ?>
+         </td>
+      </tr>
+      <tr>
+         <td>
+             <?php
+               echo $this->formLabel($form->get('fileupload')); ?>
+         </td>
+         <td>
+             <?php
+               echo $this->formElement($form->get('fileupload'));
+               echo $this->formElementErrors($form->get('fileupload')); ?>
+         </td>
+      </tr>
+    </table>
+
+    <?php
+        echo $this->formButton($form->get('upload'));
+        echo $this->formElementErrors($form->get('upload')); ?>
+
+    <?php echo $this->form()->closeTag() ?>
+</section>

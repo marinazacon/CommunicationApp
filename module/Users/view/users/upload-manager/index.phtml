@@ -1,0 +1,34 @@
+<section class="upload-manager">
+    <h2>My Uploads</h2>
+    <!-- The following logic is used to display error messages: -->
+    <?php if ($this->error): ?>
+    <p class="error">
+        There were one or more issues with your submission. Please correct them as indicated below.
+    </p>
+    <?php endif ?>
+
+    <!-- The following block is used to generate the form HTML tag using the form object assigned to the view in the controller -->
+    <?php echo $this->url(NULL,
+        array('controller'=>'UploadManager', 'action'=>'index'));
+    ?>
+    <!-- The following section is used to generate User Table -->
+    <table class="table">
+        <tr>
+            <th>Label</th>
+            <th>Filename</th>
+            <th>Actions</th>
+        </tr>
+        <?php foreach ($myUploads as $upload) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($upload->label);?></td>
+                <td><?php echo $this->escapeHtml($upload->filename);?></td>
+                <td>
+                    <a href="<?php echo $this->url(NULL,
+                        array('controller'=>'UploadManager', 'action'=>'confirmDelete', 'id' => $upload->id));?>">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+    <a href="<?php echo $this->url(NULL,
+        array('controller'=>'UploadManager', 'action'=>'uploadAdd'));?>">Add Upload</a>
+</section>

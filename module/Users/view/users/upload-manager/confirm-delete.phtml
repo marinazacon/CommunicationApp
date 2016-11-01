@@ -1,0 +1,34 @@
+<section class="confirm-delete">
+    <h2>Delete Upload</h2>
+    <!-- The following logic is used to display error messages: -->
+    <?php if ($this->error): ?>
+        <p class="error">
+            There were one or more issues with your submission. Please correct them as indicated below.
+        </p>
+    <?php endif ?>
+
+    <!-- The following block is used to generate the form HTML tag using the form object assigned to the view in the controller -->
+    <?php
+    $form = $this->form;
+    $form->prepare();
+    $form->setAttribute('action', $this->url(NULL,
+        array('controller'=>'UploadManager', 'action' => 'delete', 'id' => $this->id)));
+    $form->setAttribute('method', 'post');
+    echo $this->form()->openTag($form);
+    ?>
+
+    <p>Are you sure that you want to delete upload
+        '<?php echo $this->escapeHtml($this->label); ?>' ?
+    </p>
+    <table class="table">
+        <tr>
+            <td><?php
+                echo $this->formButton($form->get('yes'));
+                echo $this->formElementErrors($form->get('yes')); ?>
+
+                <?php
+                echo $this->formButton($form->get('no'));
+                echo $this->formElementErrors($form->get('no'));?> </td>
+        </tr>
+    </table>
+</section>

@@ -19,6 +19,8 @@ use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 
 use Users\Model\User;
 use Users\Model\UserTable;
+use Users\Model\Upload;
+use Users\Model\UploadTable;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -57,7 +59,7 @@ class Module implements AutoloaderProviderInterface
             'abstract_factories' => array(),
             'aliases' => array(),
             'factories' => array(
-// DB
+// DB - User table
                 'UserTable' => function($sm) {
                     $tableGateway = $sm->get('UserTableGateway');
                     $table = new UserTable($tableGateway);
@@ -68,6 +70,19 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new User());
                     return new TableGateway('user', $dbAdapter, null,
+                        $resultSetPrototype);
+                },
+// DB - Upload table
+                'UploadTable' => function($sm) {
+                    $tableGateway = $sm->get('UploadTableGateway');
+                    $table = new UploadTable($tableGateway);
+                    return $table;
+                },
+                'UploadTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Upload());
+                    return new TableGateway('uploads', $dbAdapter, null,
                         $resultSetPrototype);
                 },
 // FORMS
@@ -95,6 +110,15 @@ class Module implements AutoloaderProviderInterface
                     $form->setInputFilter($sm->get('UserAddFilter'));
                     return $form;
                 },
+                'UploadDeleteForm' => function ($sm) {
+                    $form = new \Users\Form\UploadDeleteForm();
+                    return $form;
+                },
+                'UploadForm' => function ($sm) {
+                    $form = new \Users\Form\UploadForm();
+                    $form->setInputFilter($sm->get('UploadFilter'));
+                    return $form;
+                },
 // FILTERS
                 'LoginFilter' => function ($sm) {
                     return new \Users\Form\LoginFilter();
@@ -107,6 +131,9 @@ class Module implements AutoloaderProviderInterface
                 },
                 'UserAddFilter' => function ($sm) {
                     return new \Users\Form\UserAddFilter();
+                },
+                'UploadFilter' => function ($sm) {
+                    return new \Users\Form\UploadFilter();
                 },
 // Authentication
                 'AuthService' => function($sm) {

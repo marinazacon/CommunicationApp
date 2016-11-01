@@ -10,6 +10,8 @@ return array(
                 'Users\Controller\LoginController',
             'Users\Controller\UserManager' =>
                 'Users\Controller\UserManagerController',
+            'Users\Controller\UploadManager' =>
+                'Users\Controller\UploadManagerController',
         ),
     ),
     'router' => array(
@@ -130,6 +132,16 @@ return array(
                             ),
                         ),
                     ),
+                    'upload-manager' => array(
+                        'type'      => 'Segment',
+                        'options'   => array(
+                            'route' => '/upload-manager[/:action[/:id]]',
+                            'defaults' => array(
+                                'controller' => 'UploadManager',
+                                'action'     => 'index',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -138,5 +150,8 @@ return array(
         'template_path_stack' => array(
             'users' => __DIR__ . '/../view',
         ),
+    ),
+    'module_config' => array(
+        'upload_location' => __DIR__ . '/../data/uploads/',
     ),
 );
