@@ -21,6 +21,8 @@ use Users\Model\User;
 use Users\Model\UserTable;
 use Users\Model\Upload;
 use Users\Model\UploadTable;
+use Users\Model\ChatMessages;
+use Users\Model\ChatMessagesTable;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -90,6 +92,19 @@ class Module implements AutoloaderProviderInterface
                 'UploadSharingTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     return new TableGateway('uploads_sharing', $dbAdapter);
+                },
+// DB - User table
+                'ChatMessagesTable' => function($sm) {
+                    $tableGateway = $sm->get('ChatMessagesTableGateway');
+                    $table = new ChatMessagesTable($tableGateway);
+                    return $table;
+                },
+                'ChatMessagesTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ChatMessages());
+                    return new TableGateway('chat_messages', $dbAdapter, null,
+                        $resultSetPrototype);
                 },
 // FORMS
                 'LoginForm' => function ($sm) {

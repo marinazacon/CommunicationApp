@@ -12,6 +12,8 @@ return array(
                 'Users\Controller\UserManagerController',
             'Users\Controller\UploadManager' =>
                 'Users\Controller\UploadManagerController',
+            'Users\Controller\GroupChat' =>
+                'Users\Controller\GroupChatController',
         ),
     ),
     'router' => array(
@@ -138,6 +140,20 @@ return array(
                             'route' => '/upload-manager[/:action[/:id[/:user_id]]]',
                             'defaults' => array(
                                 'controller' => 'UploadManager',
+                                'action'     => 'index',
+                            ),
+                        ),
+                    ),
+                    'group-chat' => array(
+                        'type'      => 'Segment',
+                        'options'   => array(
+                            'route' => '/group-chat[/:action[/:id]]',
+                            'constraints' => array(
+                                'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id'      => '[a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'GroupChat',
                                 'action'     => 'index',
                             ),
                         ),

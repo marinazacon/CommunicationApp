@@ -1,2 +1,24 @@
+
+<?php
+// Attached jQuery UI Scripts
+//$this->headScript()->appendFile($this->basePath() . '/jquery-ui/development-bundle/ui/jquery-ui.custom.js','text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/jquery-1.8.3.js','text/javascript');
+$this->headScript()->appendFile('http://code.jquery.com/ui/1.10.0/jquery-ui.js','text/javascript');
+
+// Attach jQuery UI Styles
+//$this->headLink()->appendStylesheet($this->basePath() . '/jquery-ui/css/base/images/jquery-ui-1.10.4.custom.css');
+$this->headLink()->appendStylesheet('http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css');
+
+// UI Initializer for buttons
+$this->headScript()->appendScript('$(function() {$("a.ui-button").button();});', 'text/javascript');
+?>
+
+
+
 <h1>Welcome to Users Module</h1>
-<a href="/users/index/login">Login</a> | <a href="/users/index/register">New User Registration</a>
+
+<h3>Existing Users</h3>
+<a href="/users/login" class='ui-button'>Login</a>
+
+<h3>New Users</h3>
+<a href="/users/register" class='ui-button'>Register</a>

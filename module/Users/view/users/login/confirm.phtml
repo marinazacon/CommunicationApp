@@ -1,6 +1,12 @@
 <section class="login-confirm">
     <h2>Login Successful</h2>
     <p> Welcome! <?php echo $this->user_email; ?> </p>
-    <a href="<?php echo $this->url('users/upload-manager',
+    <div>
+        <a href="<?php echo $this->url('users/upload-manager',
         array('controller'=>'UploadManager', 'action'=>'index', 'user_id' => $this->id));?>">My Uploads</a>
+    </div>
+    <div>
+        <a href="<?php echo $this->url('users/group-chat',
+            array('controller'=>'GroupChat', 'action'=>'index', 'user_id' => $this->id));?>">Group Chat</a>
+    </div>
 </section>
