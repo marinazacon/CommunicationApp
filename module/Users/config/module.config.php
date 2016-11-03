@@ -135,7 +135,7 @@ return array(
                     'upload-manager' => array(
                         'type'      => 'Segment',
                         'options'   => array(
-                            'route' => '/upload-manager[/:action[/:id]]',
+                            'route' => '/upload-manager[/:action[/:id[/:user_id]]]',
                             'defaults' => array(
                                 'controller' => 'UploadManager',
                                 'action'     => 'index',
@@ -149,6 +149,12 @@ return array(
     'view_manager' => array(
         'template_path_stack' => array(
             'users' => __DIR__ . '/../view',
+            ),
+        'not_found_template'       => 'error/404',
+        'exception_template'       => 'error/index',
+        'template_map' => array(
+            'error/404'               => __DIR__ . '/../view/error/404.phtml',
+            'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),
     ),
     'module_config' => array(

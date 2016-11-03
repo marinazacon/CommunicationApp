@@ -5,7 +5,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 use Users\Model\Upload;
-
+use Zend\Form\Element;
 
 class UploadManagerController extends AbstractActionController
 {
@@ -16,6 +16,7 @@ class UploadManagerController extends AbstractActionController
 
         $viewModel = new ViewModel( array(
             'myUploads' => $uploadTable->getUploadsByUserId($user->id),
+            'mySharedUploads' => $uploadTable->getSharedUploadsByUserId($user->id),
         ));
         return $viewModel;
     }
@@ -117,4 +118,69 @@ class UploadManagerController extends AbstractActionController
         }
     }
 
+    public function sharingAddAction()
+    {
+        $user = $this->getUserInfoFromSession();
+        $form = $this->getServiceLocator()->get('AddShareForm');
+        $uploadTable = $this->getServiceLocator()->get('UploadTable');
+        $uploadId = $this->params()->fromRoute('id');
+
+        $select = new Element\Select('comboUser');
+        $select->setLabel('Choose User');
+        $select->setValueOptions($uploadTable->getUsersNamesForShare($uploadId, $user->id));
+        if (empty($uploadTable->getUsersNamesForShare($uploadId, $user->id)))
+        {
+            $form->get('addShare')->setAttribute('disabled', 'disabled');
+        }
+        $form->add($select);
+
+        $viewModel = new ViewModel( array(
+            'form' => $form,
+            'mySharedUsers' => $uploadTable->getSharedUsers($uploadId),
+            'upload_id' => $uploadId,
+        ));
+        return $viewModel;
+    }
+
+    public function deleteSharedUserAction()
+    {
+        $userId = $this->params()->fromRoute('user_id');
+        $uploadId = $this->params()->fromRoute('id');
+
+        $this->getServiceLocator()->get('UploadTable')->removeSharing($uploadId, $userId);
+
+        return $this->redirect()->toRoute('users/upload-manager' ,
+            array('action' => 'sharingAdd', 'id' => $uploadId));
+    }
+
+    public function addSharedUserAction()
+    {
+        $data = $this->getRequest()->getPost()->toArray();
+        $userId = $data['comboUser'];
+        $uploadId = $this->params()->fromRoute('id');
+
+        $this->getServiceLocator()->get('UploadTable')->addSharing($uploadId, $userId);
+
+        return $this->redirect()->toRoute('users/upload-manager' ,
+            array('action' => 'sharingAdd', 'id' => $uploadId));
+    }
+
+    public function fileDownloadAction()
+    {
+        $uploadId = $this->params()->fromRoute('id');
+        $uploadTable = $this->getServiceLocator()->get('UploadTable');
+        $upload = $uploadTable->getUpload($uploadId);
+
+        $uploadPath = $this->getFileUploadLocation();
+        $file = file_get_contents($uploadPath . $upload->filename);
+
+        $response = $this->getEvent()->getResponse();
+        $response->getHeaders()->addHeaders(array(
+            'Content-Type' => 'application/octet-stream',
+            'Content-Disposition' => 'attachment;filename="'
+                .$upload->filename . '"',
+        ));
+        $response->setContent($file);
+        return $response;
+    }
 }

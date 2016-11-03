@@ -1,0 +1,61 @@
+<section class="sharing-add">
+    <h2>Upload Sharing</h2>
+    <!-- The following logic is used to display error messages: -->
+    <?php if ($this->error): ?>
+    <p class="error">
+        There were one or more issues with your submission. Please correct them as indicated below.
+    </p>
+    <?php endif ?>
+
+    <!-- The following block is used to generate the form HTML tag using the form object assigned to the view in the controller -->
+    <?php
+    $form = $this->form;
+    $form->prepare();
+    $form->setAttribute('action', $this->url(NULL,
+        array('controller'=>'UploadManager', 'action'=>'addSharedUser', 'id' => $upload_id)));
+    $form->setAttribute('method', 'post');
+    echo $this->form()->openTag($form);
+    ?>
+
+    <!-- The following section is used to generate Upload Table -->
+    <table class="table">
+        <tr>
+            <th>Shared Users</th>
+            <th>Emails</th>
+            <th>Actions</th>
+        </tr>
+        <?php foreach ($mySharedUsers as $sharedUser) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($sharedUser->name);?></td>
+                <td><?php echo $this->escapeHtml($sharedUser->email);?></td>
+                <td>
+                    <a href="<?php echo $this->url(NULL,
+                        array('controller'=>'UploadManager', 'action'=>'deleteSharedUser',
+                              'id' => $upload_id, 'user_id' => $sharedUser->id));?>">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <h2>Add Sharing</h2>
+    <table class="form-element">
+        <tr>
+            <td>
+                <?php
+                echo $this->formLabel($form->get('comboUser')); ?>
+            </td>
+            <td>
+                <?php
+                echo $this->formElement($form->get('comboUser'));
+                echo $this->formElementErrors($form->get('comboUser')); ?>
+            </td>
+            <td>
+                <?php
+                echo $this->formButton($form->get('addShare'));
+                echo $this->formElementErrors($form->get('addShare')); ?>
+            </td>
+        </tr>
+    </table>
+
+    <?php echo $this->form()->closeTag() ?>
+</section>

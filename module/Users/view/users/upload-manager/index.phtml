@@ -11,7 +11,7 @@
     <?php echo $this->url(NULL,
         array('controller'=>'UploadManager', 'action'=>'index'));
     ?>
-    <!-- The following section is used to generate User Table -->
+    <!-- The following section is used to generate Upload Table -->
     <table class="table">
         <tr>
             <th>Label</th>
@@ -24,11 +24,36 @@
                 <td><?php echo $this->escapeHtml($upload->filename);?></td>
                 <td>
                     <a href="<?php echo $this->url(NULL,
+                        array('controller'=>'UploadManager', 'action'=>'sharingAdd', 'id' => $upload->id));?>">Share</a>
+                    |
+                    <a href="<?php echo $this->url(NULL,
                         array('controller'=>'UploadManager', 'action'=>'confirmDelete', 'id' => $upload->id));?>">Delete</a>
                 </td>
             </tr>
         <?php endforeach; ?>
     </table>
+
     <a href="<?php echo $this->url(NULL,
         array('controller'=>'UploadManager', 'action'=>'uploadAdd'));?>">Add Upload</a>
+
+    <h2>Shared Uploads</h2>
+    <table class="table">
+        <tr>
+            <th>Label</th>
+            <th>Filename</th>
+            <th>Shared By</th>
+            <th>Actions</th>
+        </tr>
+        <?php foreach ($mySharedUploads as $sharedUpload) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($sharedUpload->label);?></td>
+                <td><?php echo $this->escapeHtml($sharedUpload->filename);?></td>
+                <td><?php echo $this->escapeHtml($sharedUpload->name);?></td>
+                <td>
+                    <a href="<?php echo $this->url(NULL,
+                        array('controller'=>'UploadManager', 'action'=>'fileDownload', 'id' => $sharedUpload->upload_id));?>">Download</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
 </section>
