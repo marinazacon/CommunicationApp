@@ -1,6 +1,5 @@
-<section class="login-confirm">
-    <h2>Login Successful</h2>
-    <p> Welcome! <?php echo $this->user_email; ?> </p>
+<section class="mail-confirm">
+    <h2>Message Sent Successful</h2>
     <div>
         <a href="<?php echo $this->url('users/upload-manager',
         array('controller'=>'UploadManager', 'action'=>'index', 'user_id' => $this->id));?>">My Uploads</a>

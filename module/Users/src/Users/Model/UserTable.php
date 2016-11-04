@@ -48,6 +48,18 @@ class UserTable
         return $resultSet;
     }
 
+    public function getUsersNames()
+    {
+        $resultSet = $this->tableGateway->select();
+
+        $users_names = array();
+        foreach ($resultSet as $result)
+        {
+            $users_names[(string)$result->id] = $result->name;
+        }
+        return $users_names;
+    }
+
     public function getUserByEmail($userEmail)
     {
         $rowset = $this->tableGateway->select(array('email' => $userEmail));

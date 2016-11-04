@@ -4,9 +4,16 @@
 
     $this->headStyle()->appendStyle('#userName { width:100px; margin-top:10px; display: inline}#messageText { width:700px; margin-top:10px;}');
 ?>
+    <script>
+        window.setInterval("reloadIFrame();", 5000);
+        function reloadIFrame() {
+            document.getElementById("messageListFrame").src="<?php echo
+            $this->url('users/group-chat', array('action' => 'messageList')); ?>"
+        }
+    </script>
+
     <h3>Group Chat</h3>
-    <iframe src="<?php echo
-        $this->url('users/group-chat', array('action' => 'messageList')) ?>" width="80%" height="400px" id="messageListFrame">
+    <iframe src="<?php echo $this->url('users/group-chat', array('action' => 'messageList')) ?>" width="80%" height="400px" id="messageListFrame">
     </iframe>
 
 <?php

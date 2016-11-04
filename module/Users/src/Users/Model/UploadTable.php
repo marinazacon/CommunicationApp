@@ -61,6 +61,7 @@ class UploadTable
     public function deleteUpload($id)
     {
         $this->tableGateway->delete(array('id' => $id));
+        $this->uploadSharingTableGateway->delete(array('upload_id' => $id));
     }
 
     public function addSharing($uploadId, $userId)

@@ -15,11 +15,13 @@ class RegisterController extends AbstractActionController
             $form));
         return $viewModel;
     }
+
     public function confirmAction()
     {
         $viewModel = new ViewModel();
         return $viewModel;
     }
+
     public function processAction()
     {
         if (!$this->request->isPost()) {

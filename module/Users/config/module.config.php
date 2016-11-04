@@ -14,6 +14,8 @@ return array(
                 'Users\Controller\UploadManagerController',
             'Users\Controller\GroupChat' =>
                 'Users\Controller\GroupChatController',
+            'Users\Controller\Mail' =>
+                'Users\Controller\MailController',
         ),
     ),
     'router' => array(
@@ -154,6 +156,20 @@ return array(
                             ),
                             'defaults' => array(
                                 'controller' => 'GroupChat',
+                                'action'     => 'index',
+                            ),
+                        ),
+                    ),
+                    'mail' => array(
+                        'type'      => 'Segment',
+                        'options'   => array(
+                            'route' => '/mail[/:action[/:id]]',
+                            'constraints' => array(
+                                'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id'      => '[a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Mail',
                                 'action'     => 'index',
                             ),
                         ),

@@ -144,6 +144,11 @@ class Module implements AutoloaderProviderInterface
                     $form = new \Users\Form\AddShareForm();
                     return $form;
                 },
+                'MailForm' => function ($sm) {
+                    $form = new \Users\Form\MailForm();
+                    $form->setInputFilter($sm->get('MailFilter'));
+                    return $form;
+                },
 // FILTERS
                 'LoginFilter' => function ($sm) {
                     return new \Users\Form\LoginFilter();
@@ -159,6 +164,9 @@ class Module implements AutoloaderProviderInterface
                 },
                 'UploadFilter' => function ($sm) {
                     return new \Users\Form\UploadFilter();
+                },
+                'MailFilter' => function ($sm) {
+                    return new \Users\Form\MailFilter();
                 },
 // Authentication
                 'AuthService' => function($sm) {

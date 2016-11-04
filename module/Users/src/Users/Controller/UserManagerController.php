@@ -63,7 +63,11 @@ class UserManagerController extends AbstractActionController
             $delete = $request->getPost('yes');
 
             if ($delete == 'yes') {
-                $this->getServiceLocator()->get('UserTable')->deleteUser($this->params()->fromRoute('id'));
+                $userID = $this->params()->fromRoute('id');
+                $this->getServiceLocator()->get('UserTable')->deleteUser($userID);
+                $this->getServiceLocator()->get('UploadTableGateway')->delete(array('user_id' => $userID));
+                $this->getServiceLocator()->get('UploadSharingTableGateway')->delete(array('user_id' => $userID));
+                $this->getServiceLocator()->get('ChatMessagesTableGateway')->delete(array('user_id' => $userID));
             }
 
             return $this->redirect()->toRoute(NULL , array(
