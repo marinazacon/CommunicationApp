@@ -46,6 +46,7 @@ class Module implements AutoloaderProviderInterface
         return include __DIR__ . '/config/module.config.php';
     }
 
+    /*
     public function onBootstrap(MvcEvent $e)
     {
         // You may not need to do this if you're doing it elsewhere in your
@@ -53,6 +54,33 @@ class Module implements AutoloaderProviderInterface
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+    }
+    */
+
+    public function onBootstrap($e)
+    {
+        $eventManager = $e->getApplication()->getEventManager();
+        $moduleRouteListener = new ModuleRouteListener();
+        $moduleRouteListener->attach($eventManager);
+        $sharedEventManager = $eventManager->getSharedManager();
+
+        // The shared event manager
+        $sharedEventManager->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, function($e) {
+            $controller = $e->getTarget();
+            // The controller which is dispatched
+            $controllerName = $controller->getEvent()->getRouteMatch()->getParam('controller');
+            if (in_array($controllerName,
+                array('Users\Controller\Index', 'Users\Controller\Register', 'Users\Controller\Login')))
+            {
+                $controller->layout('layout/layout');
+            }
+            if (in_array($controllerName,
+                array('Users\Controller\GroupChat', 'Users\Controller\Mail', 'Users\Controller\UserManager', 'Users\Controller\UploadManager')))
+            {
+                $controller->layout('layout/myaccount');
+            }
+        });
+
     }
 
     public function getServiceConfig()

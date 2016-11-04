@@ -3,14 +3,6 @@
     <p> Welcome! <?php echo $this->user_email; ?> </p>
     <div>
         <a href="<?php echo $this->url('users/upload-manager',
-        array('controller'=>'UploadManager', 'action'=>'index', 'user_id' => $this->id));?>">My Uploads</a>
-    </div>
-    <div>
-        <a href="<?php echo $this->url('users/group-chat',
-            array('controller'=>'GroupChat', 'action'=>'index', 'user_id' => $this->id));?>">Group Chat</a>
-    </div>
-    <div>
-        <a href="<?php echo $this->url('users/mail',
-            array('controller'=>'GroupChat', 'action'=>'index', 'user_id' => $this->id));?>">Send Offline Messages</a>
+        array('controller'=>'UploadManager', 'action'=>'index', 'user_id' => $this->id));?>">Scrivania</a>
     </div>
 </section>
