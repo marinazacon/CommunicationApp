@@ -28,7 +28,7 @@ class UploadTable
             if ($this->getUpload($id)) {
                 $this->tableGateway->update($data, array('id' => $id));
             } else {
-                throw new \Exception('User ID does not exist');
+                throw new \Exception('Upload ID does not exist');
             }
         }
     }

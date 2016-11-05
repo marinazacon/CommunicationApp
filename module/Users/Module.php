@@ -23,6 +23,8 @@ use Users\Model\Upload;
 use Users\Model\UploadTable;
 use Users\Model\ChatMessages;
 use Users\Model\ChatMessagesTable;
+use Users\Model\ImageUpload;
+use Users\Model\ImageUploadTable;
 
 class Module implements AutoloaderProviderInterface
 {
@@ -70,12 +72,22 @@ class Module implements AutoloaderProviderInterface
             // The controller which is dispatched
             $controllerName = $controller->getEvent()->getRouteMatch()->getParam('controller');
             if (in_array($controllerName,
-                array('Users\Controller\Index', 'Users\Controller\Register', 'Users\Controller\Login')))
+                array(
+                    'Users\Controller\Index',
+                    'Users\Controller\Register',
+                    'Users\Controller\Login'
+                )))
             {
                 $controller->layout('layout/layout');
             }
             if (in_array($controllerName,
-                array('Users\Controller\GroupChat', 'Users\Controller\Mail', 'Users\Controller\UserManager', 'Users\Controller\UploadManager')))
+                array(
+                    'Users\Controller\GroupChat',
+                    'Users\Controller\Mail',
+                    'Users\Controller\UserManager',
+                    'Users\Controller\UploadManager',
+                    'Users\Controller\MediaManager'
+                )))
             {
                 $controller->layout('layout/myaccount');
             }
@@ -121,7 +133,7 @@ class Module implements AutoloaderProviderInterface
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     return new TableGateway('uploads_sharing', $dbAdapter);
                 },
-// DB - User table
+// DB - Chat Messages table
                 'ChatMessagesTable' => function($sm) {
                     $tableGateway = $sm->get('ChatMessagesTableGateway');
                     $table = new ChatMessagesTable($tableGateway);
@@ -132,6 +144,19 @@ class Module implements AutoloaderProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ChatMessages());
                     return new TableGateway('chat_messages', $dbAdapter, null,
+                        $resultSetPrototype);
+                },
+// DB - Image Upload table
+                'ImageUploadTable' => function($sm) {
+                    $tableGateway = $sm->get('ImageUploadTableGateway');
+                    $table = new ImageUploadTable($tableGateway);
+                    return $table;
+                },
+                'ImageUploadTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ImageUpload());
+                    return new TableGateway('image_uploads', $dbAdapter, null,
                         $resultSetPrototype);
                 },
 // FORMS
@@ -177,6 +202,15 @@ class Module implements AutoloaderProviderInterface
                     $form->setInputFilter($sm->get('MailFilter'));
                     return $form;
                 },
+                'ImageUploadForm' => function ($sm) {
+                    $form = new \Users\Form\ImageUploadForm();
+                    $form->setInputFilter($sm->get('ImageUploadFilter'));
+                    return $form;
+                },
+                'ImageUploadDeleteForm' => function ($sm) {
+                    $form = new \Users\Form\ImageUploadDeleteForm();
+                    return $form;
+                },
 // FILTERS
                 'LoginFilter' => function ($sm) {
                     return new \Users\Form\LoginFilter();
@@ -195,6 +229,9 @@ class Module implements AutoloaderProviderInterface
                 },
                 'MailFilter' => function ($sm) {
                     return new \Users\Form\MailFilter();
+                },
+                'ImageUploadFilter' => function ($sm) {
+                    return new \Users\Form\ImageUploadFilter();
                 },
 // Authentication
                 'AuthService' => function($sm) {

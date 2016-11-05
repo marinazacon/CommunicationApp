@@ -16,6 +16,8 @@ return array(
                 'Users\Controller\GroupChatController',
             'Users\Controller\Mail' =>
                 'Users\Controller\MailController',
+            'Users\Controller\MediaManager' =>
+                'Users\Controller\MediaManagerController',
         ),
     ),
     'router' => array(
@@ -170,6 +172,21 @@ return array(
                             ),
                             'defaults' => array(
                                 'controller' => 'Mail',
+                                'action'     => 'index',
+                            ),
+                        ),
+                    ),
+                    'media-manager' => array(
+                        'type'      => 'Segment',
+                        'options'   => array(
+                            'route'         => '/media[/:action[/:id[/:subaction]]]',
+                            'constraints'   => array(
+                                'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id'        => '[a-zA-Z0-9_-]*',
+                                'subaction' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Users\Controller\MediaManager',
                                 'action'     => 'index',
                             ),
                         ),

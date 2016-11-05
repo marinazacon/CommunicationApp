@@ -1,0 +1,46 @@
+<section class="media-manager">
+    <h2>My Media Uploads</h2>
+    <!-- The following logic is used to display error messages: -->
+    <?php if ($this->error): ?>
+    <p class="error">
+        There were one or more issues with your submission. Please correct them as indicated below.
+    </p>
+    <?php endif ?>
+
+    <!-- The following block is used to generate the form HTML tag using the form object assigned to the view in the controller -->
+    <?php echo $this->url(NULL,
+        array('controller'=>'MediaManager', 'action'=>'index'));
+    ?>
+    <!-- The following section is used to generate Upload Table -->
+    <table class="table">
+        <tr>
+            <th>Image</th>
+            <th>Label</th>
+            <th>Filename</th>
+            <th>Actions</th>
+        </tr>
+        <?php foreach ($myImageUploads as $image_upload) : ?>
+            <tr>
+                <td>
+                    <a href="<?php echo $this->url(NULL,
+                        array('controller'=>'MediaManager',
+                            'action'=>'showFullImage',
+                            'id' => $image_upload->id));?>">
+                        <img src="<?php echo $this->url('users/media-manager',
+                        array('action'=>'showImage',
+                            'id' => $image_upload->id,
+                            'subaction' => 'thumb'));?>" /></a></td>
+                <td><?php echo $this->escapeHtml($image_upload->label);?></td>
+                <td><?php echo $this->escapeHtml($image_upload->filename);?></td>
+                <td>
+                    <a href="<?php echo $this->url(NULL,
+                        array('controller'=>'MediaManager', 'action'=>'confirmDelete', 'id' => $image_upload->id));?>">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <a href="<?php echo $this->url(NULL,
+        array('controller'=>'MediaManager', 'action'=>'imageUploadAdd'));?>">Add Upload</a>
+</section>
+
