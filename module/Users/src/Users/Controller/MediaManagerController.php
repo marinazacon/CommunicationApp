@@ -132,6 +132,40 @@ class MediaManagerController extends AbstractActionController
         return $viewModel;
     }
 
+    public function rotateImageAction()
+    {
+        $uploadTable = $this->getServiceLocator()->get('ImageUploadTable');
+        $upload = $uploadTable->getImageUpload($this->params()->fromRoute('id'));
+
+        $this->rotateImage($upload,$this->params()->fromRoute('subaction'));
+
+        return $this->redirect()->toRoute('users/media-manager' ,
+            array('action' => 'showFullImage', 'id' => $upload->id));
+    }
+
+    public function rotateImage($upload, $direction)
+    {
+        $path = $this->getFileUploadLocation();
+        $webino = $this->getServiceLocator()->get('WebinoImageThumb');
+
+        $sourceImageFileName = $path . $upload->filename;
+        $sourceImageThumbnail = $path . $upload->thumbnail;
+        $imageFileName = $webino->create($sourceImageFileName, $options = array());
+        $imageThumbnail = $webino->create($sourceImageThumbnail, $options = array());
+        if ($direction == 'right')
+        {
+            $imageFileName->rotateImage('CCW');
+            $imageThumbnail->rotateImage('CCW');
+        } else
+        {
+            $imageFileName->rotateImage('CW');
+            $imageThumbnail->rotateImage('CW');
+        }
+        $imageFileName->save($sourceImageFileName);
+        $imageThumbnail->save($sourceImageThumbnail);
+        return true;
+    }
+
     public function confirmDeleteAction()
     {
         $uploadTable = $this->getServiceLocator()->get('ImageUploadTable');
@@ -155,10 +189,10 @@ class MediaManagerController extends AbstractActionController
             if ($delete == 'yes') {
                 $uploadPath = $this->getFileUploadLocation();
                 $upload = $this->getServiceLocator()->get('ImageUploadTable')->getImageUpload($this->params()->fromRoute('id'));
-                $uploadPath = (String)$uploadPath . (String)$upload->filename;
-                unlink($uploadPath);
-                $uploadPath = (String)$uploadPath . (String)$upload->thumbnail;
-                unlink($uploadPath);
+                $filename = (String)$uploadPath . (String)$upload->filename;
+                unlink($filename);
+                $thumbnail = (String)$uploadPath . (String)$upload->thumbnail;
+                unlink($thumbnail);
                 $this->getServiceLocator()->get('ImageUploadTable')->deleteImageUpload($upload->id);
             }
 

@@ -5,6 +5,19 @@
         array('action'=>'showImage',
             'id' => $upload->id,
             'subaction' => 'full'));?>" />
+    <div align="center">
+    <a href="<?php echo $this->url(NULL, array(
+            'controller'=>'MediaManager',
+            'action'=>'rotateImage',
+            'id' => $upload->id,
+            'subaction' => 'left'));?>">Rotate left</a>
+    |
+    <a href="<?php echo $this->url(NULL, array(
+            'controller'=>'MediaManager',
+            'action'=>'rotateImage',
+            'id' => $upload->id,
+            'subaction' => 'right'));?>">Rotate right</a>
+    </div>
 </section>
 <a href="<?php echo $this->url('users/media-manager');?>">
     &raquo; Show Gallery</a>
