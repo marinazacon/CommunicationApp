@@ -11,7 +11,15 @@
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",
         "zendframework/zftool": "dev-master",
+        "zendframework/zendgdata": "2.*",
+        "zendframework/zendsearch": "dev-master",
         "webino/webino-image-thumb": "1.*",
-        "components/jqueryui": "1.10.4"
+        "components/jqueryui": "1.10.4",
+        "google/apiclient": "^2.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "ZendSearch\\": "vendor/zendframework/zendsearch/library/"
+        }
     }
 }

@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="google-signin-client_id" content="515310922226-ra90c3np3ujrjb5cbqgqr53tci1hp9sj.apps.googleusercontent.com">
     <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
 
     <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
@@ -44,6 +45,9 @@
                 </ul>
                 <ul class="nav">
                     <li class="active"><a href="<?php echo $this->url('users/mail') ?>"><?php echo $this->translate('Send Mails') ?></a></li>
+                </ul>
+                <ul class="nav">
+                    <li class="active"><a href="<?php echo $this->url('users/search') ?>"><?php echo $this->translate('Indexed Search') ?></a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>

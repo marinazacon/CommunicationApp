@@ -18,11 +18,12 @@ return array(
                 'Users\Controller\MailController',
             'Users\Controller\MediaManager' =>
                 'Users\Controller\MediaManagerController',
+            'Users\Controller\Search' =>
+                'Users\Controller\SearchController',
         ),
     ),
     'router' => array(
         'routes' => array(
-
             'users' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -191,6 +192,19 @@ return array(
                             ),
                         ),
                     ),
+                    'search' => array(
+                        'type'      => 'Segment',
+                        'options'   => array(
+                            'route'         => '/search[/:action]',
+                            'constraints'   => array(
+                                'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Users\Controller\Search',
+                                'action'     => 'index',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -210,5 +224,7 @@ return array(
     ),
     'module_config' => array(
         'upload_location' => __DIR__ . '/../data/uploads/',
+        'client_secret' => __DIR__ . '/../../../client_secret.json',
+        'search_index' => __DIR__ . '/../data/search_index',
     ),
 );
