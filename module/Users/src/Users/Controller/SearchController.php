@@ -48,14 +48,14 @@ class SearchController extends AbstractActionController
         foreach($allUploads as $fileUpload) {
 
             $uploadOwner = $userTable->getUser($fileUpload->user_id);
-// create lucene fields
+
             $fileUploadId = Document\Field::unIndexed(
                             'upload_id', $fileUpload->id);
             $label = Document\Field::Text(
                             'label', $fileUpload->label);
             $owner = Document\Field::Text(
                             'owner', $uploadOwner->name);
-// create a new document and add all fields
+
             $indexDoc = new Lucene\Document();
             $indexDoc->addField($label);
             $indexDoc->addField($owner);
@@ -67,7 +67,6 @@ class SearchController extends AbstractActionController
 
     public function getIndexLocation()
     {
-// Fetch Configuration from Module Config
         $config = $this->getServiceLocator()->get('config');
 
         if ($config instanceof Traversable) {
