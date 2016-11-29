@@ -86,7 +86,8 @@ class Module implements AutoloaderProviderInterface
                     'Users\Controller\Mail',
                     'Users\Controller\UserManager',
                     'Users\Controller\UploadManager',
-                    'Users\Controller\MediaManager'
+                    'Users\Controller\MediaManager',
+                    'Users\Controller\Search'
                 )))
             {
                 $controller->layout('layout/myaccount');
@@ -209,6 +210,10 @@ class Module implements AutoloaderProviderInterface
                 },
                 'ImageUploadDeleteForm' => function ($sm) {
                     $form = new \Users\Form\ImageUploadDeleteForm();
+                    return $form;
+                },
+                'SearchForm' => function ($sm) {
+                    $form = new \Users\Form\SearchForm();
                     return $form;
                 },
 // FILTERS

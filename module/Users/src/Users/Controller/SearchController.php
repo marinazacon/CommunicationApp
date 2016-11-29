@@ -13,6 +13,33 @@ class SearchController extends AbstractActionController
 
     public function indexAction()
     {
+        $request = $this->getRequest();
+        $results = array();
+
+        if ($request->isPost()) {
+            $queryText = $request->getPost()->get('query');
+            $searchIndexLocation = $this->getIndexLocation();
+            $index = Lucene\Lucene::open($searchIndexLocation);
+            $searchResults = $index->find($queryText);
+            $i = 0;
+            foreach ($searchResults as $searchResult)
+            {
+                $results['i'] = $searchResult->getDocument();
+                $i ++;
+            }
+        }
+
+        $form = $this->getServiceLocator()->get('SearchForm');
+        $viewModel = new ViewModel(array(
+                'form' => $form,
+                'searchResults' => $results
+            )
+        );
+        return $viewModel;
+    }
+
+    public function generateIndexAction()
+    {
         $searchIndexLocation = $this->getIndexLocation();
         $index = Lucene\Lucene::create($searchIndexLocation);
         $userTable = $this->getServiceLocator()->get('UserTable');
@@ -36,9 +63,6 @@ class SearchController extends AbstractActionController
             $index->addDocument($indexDoc);
         }
         $index->commit();
-
-        $view = new ViewModel();
-        return $view;
     }
 
     public function getIndexLocation()
